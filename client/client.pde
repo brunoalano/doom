@@ -10,6 +10,10 @@
  * @license LGPL
  */
 import java.util.Iterator;
+import java.util.Observer;
+import java.util.Observable;
+import java.util.List;
+import java.util.Arrays;
 
 /**
  * Creates the Interaction Interface
@@ -17,7 +21,7 @@ import java.util.Iterator;
  * This interface will allow user to start the
  * game client
  */
-class GameInterface {
+class GameInterface extends Observable {
   /**
    * Store the elements
    */
@@ -27,6 +31,15 @@ class GameInterface {
    * Store if need to redraw
    */
   boolean needRedraw = false;
+  
+  /**
+   * Receives a Click Action
+   */
+  public void receiveClickAction( List coordinate )
+  {
+    setChanged();
+    notifyObservers(coordinate);
+  }
   
   /**
    * Construct the new Interface
@@ -42,6 +55,9 @@ class GameInterface {
     /* Create Start Button */
     Button startButton = new Button(100.0, 100.0, new PVector(100.0, 100.0));
     this.add( startButton );
+    
+    /* Observe */
+    this.addObserver(startButton);
   }
   
   /**
@@ -64,6 +80,9 @@ class GameInterface {
    */
   void draw()
   {
+    /* Debug */
+    println("Drawing...");
+    
     /* Iterate objects to draw */
     Iterator objectIterator = this.elements.iterator();
     while ( objectIterator.hasNext() )
@@ -99,4 +118,19 @@ void draw()
   {
     game_interface.draw();
   }
+}
+
+/**
+ * Receive Click Events
+ */
+void mouseClicked()
+{
+  /* Immutable List of Coordinates of Click */
+  List<Integer> coord = Arrays.asList(mouseX, mouseY);
+  
+  /* Debug message */
+  println("Clicked at X: " + coord.get(0) + " and Y: " + coord.get(1));
+  
+  /* Send to interface */
+  game_interface.receiveClickAction( coord );
 }

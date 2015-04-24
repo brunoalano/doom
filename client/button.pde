@@ -9,6 +9,34 @@ class Button implements UiElement, Observer {
   PVector coordinate;
   
   /**
+   * Creates the Button Object
+   *
+   * @param button_width   size of the button
+   * @param button_height  size of the button
+   * @param coordinate     coordinate of x,y axis
+   */
+  Button(float button_width, float button_height, PVector coord)
+  {
+    this.coordinate = coord;
+    this.button_width = button_width;
+    this.button_height = button_height;
+  }
+   
+  /**
+   * Draw this Object into Interface
+   */
+  void draw() {
+    pushStyle();
+    fill(0);
+    rect(coordinate.x, coordinate.y, button_width, button_height);
+    popStyle();
+  }
+  
+  /************************************************
+   * Delegation Actions
+   ***********************************************/
+  
+  /**
    * Receives event from Observerable
    *
    * The observable will send an object to this Observer, and
@@ -37,29 +65,5 @@ class Button implements UiElement, Observer {
   public void clicked(List<Integer> position)
   {
     background(0);
-  }
-  
-  /**
-   * Creates the Button Object
-   *
-   * @param button_width   size of the button
-   * @param button_height  size of the button
-   * @param coordinate     coordinate of x,y axis
-   */
-  Button(float button_width, float button_height, PVector coord)
-  {
-    this.coordinate = coord;
-    this.button_width = button_width;
-    this.button_height = button_height;
-  }
-   
-  /**
-   * Draw this Object into Interface
-   */
-  void draw() {
-    pushStyle();
-    fill(0);
-    rect(coordinate.x, coordinate.y, button_width, button_height);
-    popStyle();
   }
 }
